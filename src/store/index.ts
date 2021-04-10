@@ -1,4 +1,5 @@
 import { ActionContext, createStore } from 'vuex';
+import VuexPersistence from 'vuex-persist';
 
 type State = {
     listenQuotes: string[];
@@ -7,6 +8,11 @@ type State = {
 const state: State = {
     listenQuotes: [],
 };
+
+const vuexLocal = new VuexPersistence<State>({
+    key: '#currency-app',
+    storage: window.localStorage,
+});
 
 const store = createStore({
     state,
@@ -40,6 +46,7 @@ const store = createStore({
             commit('removeListenedQuote', quote);
         },
     },
+    plugins: [vuexLocal.plugin],
 });
 
 export default store;
