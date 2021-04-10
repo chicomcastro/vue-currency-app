@@ -29,21 +29,19 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import { onMounted, reactive, toRefs } from 'vue';
+// import { Options, Vue, setup } from 'vue-class-component';
+import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import api from '@/services/api';
 import ListQuotes from './components/ListQuotes.vue';
 import WatchListQuotes from './components/WatchListQuotes.vue';
 import { Quotes } from './types/quotes';
 
-@Options({
+// "Classical" components
+export default defineComponent({
     name: 'App',
     components: { ListQuotes, WatchListQuotes },
     setup() {
-        const data: {
-            quotes: Quotes;
-            listenQuotes: string[];
-        } = reactive({
+        const data: { quotes: Quotes; listenQuotes: string[] } = reactive({
             quotes: {},
             listenQuotes: [],
         });
@@ -63,6 +61,34 @@ import { Quotes } from './types/quotes';
             onUnlisten,
         };
     },
-})
-export default class App extends Vue {}
+});
+
+// Class components
+// @Options({
+//     name: 'App',
+//     components: { ListQuotes, WatchListQuotes },
+// })
+// export default class App extends Vue {
+//     myContext = setup(() => {
+//         const data: { quotes: Quotes; listenQuotes: string[] } = {
+//             quotes: {},
+//             listenQuotes: [],
+//         };
+//         onMounted(async () => {
+//             const response = await api.all();
+//             data.quotes = response.data;
+//         });
+//         function onListen(code: string) {
+//             data.listenQuotes.push(code);
+//         }
+//         function onUnlisten(code: string) {
+//             data.listenQuotes = data.listenQuotes.filter((key) => key !== code);
+//         }
+//         return {
+//             ...toRefs(data),
+//             onListen,
+//             onUnlisten,
+//         };
+//     });
+// }
 </script>

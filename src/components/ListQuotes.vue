@@ -51,7 +51,6 @@
 </template>
 
 <script lang="ts">
-import { Quotes } from '@/types/quotes';
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
@@ -59,12 +58,7 @@ import { Options, Vue } from 'vue-class-component';
         quotes: { type: Object, required: true },
         listenQuotes: { type: Array, required: true },
     },
+    emits: ['listen', 'unlisten'],
 })
-export default class ListQuotes extends Vue {
-    props!: {
-        quotes: Quotes;
-        listenQuotes: string[];
-    };
-    emits!: ['listen', 'unlisten'];
-}
+export default class ListQuotes extends Vue {}
 </script>
