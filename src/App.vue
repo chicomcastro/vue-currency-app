@@ -7,7 +7,7 @@
             <div class="card-body">
                 <WatchListQuotes
                     :listen-quotes="listenQuotes"
-                    @unlisten="onUnlisten"
+                    @unlisten="removeListenedQuote"
                 />
             </div>
         </div>
@@ -20,8 +20,8 @@
                 <ListQuotes
                     :quotes="quotes"
                     :listen-quotes="listenQuotes"
-                    @listen="onListen"
-                    @unlisten="onUnlisten"
+                    @listen="addQuoteToListen"
+                    @unlisten="removeListenedQuote"
                 />
             </div>
         </div>
@@ -35,30 +35,28 @@ import api from '@/services/api';
 import ListQuotes from './components/ListQuotes.vue';
 import WatchListQuotes from './components/WatchListQuotes.vue';
 import { Quotes } from './types/quotes';
+import { mapActions, mapState } from 'vuex';
 
 // "Classical" components
 export default defineComponent({
     name: 'App',
     components: { ListQuotes, WatchListQuotes },
+    computed: {
+        ...mapState(['listenQuotes']),
+    },
+    methods: {
+        ...mapActions(['addQuoteToListen', 'removeListenedQuote']),
+    },
     setup() {
-        const data: { quotes: Quotes; listenQuotes: string[] } = reactive({
+        const data: { quotes: Quotes } = reactive({
             quotes: {},
-            listenQuotes: [],
         });
         onMounted(async () => {
             const response = await api.all();
             data.quotes = response.data;
         });
-        function onListen(code: string) {
-            data.listenQuotes.push(code);
-        }
-        function onUnlisten(code: string) {
-            data.listenQuotes = data.listenQuotes.filter((key) => key !== code);
-        }
         return {
             ...toRefs(data),
-            onListen,
-            onUnlisten,
         };
     },
 });
