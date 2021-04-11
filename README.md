@@ -1,5 +1,8 @@
 # vue-currency-app
 
+You can check this project out at https://chicomcastro.github.io/vue-currency-app/
+
+
 ## Project setup
 ```
 yarn install
